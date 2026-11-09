@@ -3,27 +3,31 @@ package com.amicus.testapk;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
-
 import java.util.List;
+import androidx.lifecycle.LiveData;
+import androidx.room.Delete;
+import androidx.room.Update;
 
-/**
- * Created by sizik on 09.11.2026.
- */
 @Dao
 public interface UserDao {
+
     @Insert
     long insert(User user);
 
-    @Query("SELECT*FROM mytable")
-    List<User>getAll();
+    @Update
+    void update(User user);
 
-    @Query("DELETE FROM mytable")
-    int clearAll();
+    @Delete
+    void delete(User user);
 
-    @Query("DELETE FROM sqlite_sequence WHERE name = 'mytable'")
-    void reset();
+    @Query("SELECT * FROM users ORDER BY name ASC")
+    LiveData<List<User>> getAllUsers();
 
-    @Query("DELETE FROM mytable WHERE id=:id")
-    int deleteById(int id);
+    @Query("SELECT * FROM users WHERE id = :userId")
+    LiveData<User> getUserById(int userId);
+
+    @Query("DELETE FROM users")
+    void deleteAll();
+}
 
 }
